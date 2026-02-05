@@ -8,41 +8,17 @@ post is a little vague about what is _needed_ and what are _suggestions_. So her
 is my list of "ingredients" and questions that you need to answer or implement
 when you're getting started with your own loop:
 
-## Getting started
+## Planning Your Setup
 
-1. Where are you going to run Ralph? On an old laptop? In the cloud?
-    * Do you want to run Ralph in a VM, like qemu or virtualbox?
-    * Do you want to run Ralph in a container, like docker or podman?
-    * There's lots of options and [recommendations](https://github.com/ghuntley/how-to-ralph-wiggum/blob/main/references/sandbox-environments.md).
-      Pick one and try it.
-2. How do you like running long-running tasks?
-    * I have a habit of using `screen` but the industry currently adores `tmux`
-    * You may want to graduate to running it in `systemd` or `launchd` to ensure
-      Ralph resumes working in case the machine its running on restarts.
-3. How do you like tracking your "root" spec?
-    * Geoffrey's [example](https://github.com/ghuntley/how-to-ralph-wiggum) uses
-      `@IMPLEMENTATION_PLAN.md`
-    * Anthropic's [note](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
-      on long running agents recommends using JSON. I like `TASKS.jsonl` with a
-      corresponding spec/plan/prd.
-4. How do want Ralph to track its memories?
-    * `STATUS.md` or `PROGRESS.md`? Update `TASKS.jsonl` as pending?
-    * Do you want `LEARNINGS.md` to track failures/gotchas?
-    * Do you want Ralph to write `specs/` and/or `docs/`?
-5. Do you want Ralph to improve itself?
-    * Do you want it updating `AGENTS.md` or `RALPH.md`? They will get updated
-      on the next loop iteration!
-    * Do you want Ralph updating `ralph.py` (more on that below)? Do you want it
-      reading `~/.ralph/logs/` to find inefficiencies?
-6. What coding agent do you prefer to use?
-    * Claude Code, Codex are from frontier AI companies
-    * Ampcode has an ad-supported free tier
-    * Opencode and Aider are open source
-7. How do you want to structure your codebase?
-    * Where do you keep your source code? `src/`?
-    * Do you want Ralph checking out code to `~` as a part of its research
-      before adding new dependencies?
-8. What's stopping you from getting started??
+Infrastructure decisions to consider before running Ralph:
+
+1. **Where will Ralph run?** Old laptop, cloud VM, container?
+    * [Sandbox environment recommendations](https://github.com/ghuntley/how-to-ralph-wiggum/blob/main/references/sandbox-environments.md)
+2. **How will you manage long-running sessions?**
+    * `screen`, `tmux`, or graduate to `systemd`/`launchd` for auto-restart
+3. **Do you want Ralph to improve itself?**
+    * Let it update `AGENTS.md`, `RALPH.md`, or even `ralph.py`
+    * Have it read `~/.ralph/logs/` to find inefficiencies
 
 The most important thing is to just try, and "[let ralph ralph](https://github.com/ghuntley/how-to-ralph-wiggum?tab=readme-ov-file#-let-ralph-ralph)".
 You will burn through API tokens like crazy. But you can pay for a monthly
@@ -52,6 +28,24 @@ Claude code getting rate limited and sleeps until the next window.
 JUST GET STARTED!
 
 ## Quick Start
+
+**One-liner for Claude:**
+```
+Study this diy-ralph repo. Ask me the "Ralph Configuration" questions, then add Ralph to {YOUR_PROJECT_PATH}
+```
+
+### Ralph Configuration
+
+These questions help Claude customize Ralph for your project:
+
+1. **Coding agent** — default: Claude Code. Other options: Codex, Ampcode, Opencode, Aider
+2. **Task format** — `TASKS.jsonl` (structured) or `IMPLEMENTATION_PLAN.md` (prose)
+3. **Memory files** — `STATUS.md`, `LEARNINGS.md`, `specs/*.md` (all recommended)
+4. **Initial spec or first tasks** — point to existing plan, or describe what Ralph should build
+
+Claude will auto-detect your project's build/test commands by studying `package.json`, `Makefile`, `pyproject.toml`, etc.
+
+### Manual Setup
 
 Copy these files to your existing project:
 
@@ -72,7 +66,7 @@ git add RALPH.md ralph.py AGENTS.md TASKS.jsonl STATUS.md LEARNINGS.md
 git commit -m "Add Ralph loop"
 ```
 
-Tune these files based on your answers to the [Getting Started](#getting-started) questions.
+Tune these files based on your [Ralph Configuration](#ralph-configuration) choices.
 For example, if you prefer `IMPLEMENTATION_PLAN.md` over `TASKS.jsonl`, update the
 references in `RALPH.md` accordingly.
 
